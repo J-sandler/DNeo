@@ -1,0 +1,16 @@
+DNeo Fast Parallel Drafter
+
+Code retains the MIT License and the original sgl-project copyright notice.
+SpecForge: https://github.com/sgl-project/SpecForge
+SGLang: https://github.com/sgl-project/sglang
+Native verification and scheduling reuse SGLang's DFlashWorkerV2.
+The distributed runtime and kernels are derived from the qualified DNeo source.
+
+Transformers Qwen3 components retain their upstream Apache-2.0 license:
+https://github.com/huggingface/transformers/blob/main/LICENSE
+
+Draft weights are licensed under Apache-2.0. This does not relicense the MIT
+configuration/modeling/reference code in the Hugging Face model repository.
+DFlash, DFlash-2 and DSpark informed the architecture; no baseline draft weights
+are included. Qwen target weights and tokenizer download separately under their
+upstream terms: https://huggingface.co/Qwen/Qwen3-4B

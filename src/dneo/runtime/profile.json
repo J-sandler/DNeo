@@ -1,0 +1,36 @@
+{
+  "profile_id": "dneo-native-hyperoptimized-t7-v5",
+  "environment": {
+    "a10": {
+      "DNEO_KV_ONLY_ATTENTION_BACKEND": "triton"
+    },
+    "common": {
+      "CUBLAS_WORKSPACE_CONFIG": ":4096:8",
+      "DNEO_ANCHOR_PROJECTION": "auto",
+      "DNEO_BACKBONE_TUNING": "none",
+      "DNEO_COMPACT_MOFA": "0",
+      "DNEO_COMPACT_ROUTER": "original",
+      "DNEO_ENGINE_MAX_RUNNING_REQUESTS": "32",
+      "DNEO_FUSED_PREFIX_COMMIT": "1",
+      "DNEO_GROUPED_COMMIT_NORM": "original",
+      "DNEO_GROUPED_PREFIX_COMMIT": "0",
+      "DNEO_HEAD_STRIDED_IO": "1",
+      "DNEO_KV_ONLY_ATTENTION_ACCUMULATION": "fp32",
+      "DNEO_MOFA_REUSE_LOADS": "1",
+      "DNEO_NATIVE_CACHE_MOFA": "1",
+      "DNEO_NATIVE_DRAFT_KERNEL": "hardware-auto",
+      "DNEO_REUSE_MEMORY_KV": "1",
+      "SPEC_STEP_PROFILE_DETAIL": "0"
+    },
+    "h100": {
+      "DNEO_BACKBONE_TUNING": "all",
+      "DNEO_COMPACT_MOFA": "1",
+      "DNEO_COMPACT_ROUTER": "exact",
+      "DNEO_GROUPED_COMMIT_NORM": "torch-fused",
+      "DNEO_GROUPED_PREFIX_COMMIT": "1",
+      "DNEO_KV_ONLY_ATTENTION_BACKEND": "fa3-split"
+    }
+  },
+  "upstream_sglang_commit": "7ccbf5fd04f7ee23095fc38e49e749d58dc18282",
+  "source_checkpoint_sha256": "f6927c48a1b0fb72b87b11bf299fda912d63fc2a571283adce6c92597ea465c2"
+}

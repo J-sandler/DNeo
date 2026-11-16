@@ -1,0 +1,21 @@
+{
+  "benchmarks": ["gsm8k", "math500", "humaneval", "mbpp", "gpqa", "mt_bench"],
+  "samples_per_benchmark": 50,
+  "batches": [1, 4, 16, 32, 64],
+  "target_temperatures": [1, 0],
+  "draft_temperature": 1,
+  "block_size": 16,
+  "max_prompt_tokens": 256,
+  "max_new_tokens": 512,
+  "context_length": 1024,
+  "top_p": 1.0,
+  "top_k": -1,
+  "prefill_warmup_tokens": 32,
+  "metrics": ["full_request_tps", "decode_only_tps", "tpf", "ttft", "conditional_position_acceptance"],
+  "scheduler_rule": "Admission capacity must exceed the submitted cohort; record actual graph ceiling separately.",
+  "timing_rule": "Real streamed first-token boundary for serving; synchronized wall time after prefill for fixed HF cohorts.",
+  "prompt_data": "Not redistributed; use a matched user-provided prompt bank after dataset licensing review.",
+  "memory_fraction_static": 0.6,
+  "cublas_workspace_config": ":4096:8",
+  "performance_reproduction_status": "HASH_BOUND_ATTESTATION_REQUIRED"
+}

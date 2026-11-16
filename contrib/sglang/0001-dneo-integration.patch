@@ -1,0 +1,373 @@
+--- a/python/sglang/srt/speculative/dflash_worker_v2.py
++++ b/python/sglang/srt/speculative/dflash_worker_v2.py
+@@ -2410,170 +2410,175 @@
+             )
+             verify_out_cache_loc_2d.copy_(verify_out_cache_loc.view(bs, block_size))
+ 
+-        if self._full_embed_gpu is not None:
+-            # Replicated lookup avoids the mismatched attn-TP all_reduce
+-            # inside VocabParallelEmbedding under dp attention.
+-            noise_embedding = torch.nn.functional.embedding(
+-                block_ids, self._full_embed_gpu
+-            )
++        if hasattr(self, '_dneo_draft_block'):
++            positions = positions_2d.reshape(-1)
++            verify_out_cache_loc = verify_out_cache_loc_2d.reshape(-1)
++            draft_next = self._dneo_draft_block(block_ids, prefix_lens, batch)
+         else:
+-            noise_embedding = embed_module(block_ids)
+-        if self._noise_embed_scale != 1.0:
+-            noise_embedding = noise_embedding * self._noise_embed_scale
+-        input_embeds = noise_embedding.view(-1, noise_embedding.shape[-1])
+-
+-        positions = positions_2d.reshape(-1)
+-        verify_out_cache_loc = verify_out_cache_loc_2d.reshape(-1)
+-
+-        seq_lens_cpu = self._draft_seq_lens_cpu_buf[:bs]
+-        if self.use_compact_draft_cache:
+-            # Rebuild the draft-local sliding-window view from committed target state.
+-            draft_prefix_lens = self._compute_compact_draft_seq_lens(prefix_lens)
+-            self._fill_compact_seq_lens_cpu_bound(
+-                batch_seq_lens_cpu=batch.seq_lens_cpu,
+-                nxt_kv_lens_cpu=draft_input.nxt_kv_lens_cpu,
+-                draft_prefix_lens=draft_prefix_lens,
+-                out=seq_lens_cpu,
+-            )
+-            self._rebuild_compact_draft_cache(
++            if self._full_embed_gpu is not None:
++                # Replicated lookup avoids the mismatched attn-TP all_reduce
++                # inside VocabParallelEmbedding under dp attention.
++                noise_embedding = torch.nn.functional.embedding(
++                    block_ids, self._full_embed_gpu
++                )
++            else:
++                noise_embedding = embed_module(block_ids)
++            if self._noise_embed_scale != 1.0:
++                noise_embedding = noise_embedding * self._noise_embed_scale
++            input_embeds = noise_embedding.view(-1, noise_embedding.shape[-1])
++
++            positions = positions_2d.reshape(-1)
++            verify_out_cache_loc = verify_out_cache_loc_2d.reshape(-1)
++
++            seq_lens_cpu = self._draft_seq_lens_cpu_buf[:bs]
++            if self.use_compact_draft_cache:
++                # Rebuild the draft-local sliding-window view from committed target state.
++                draft_prefix_lens = self._compute_compact_draft_seq_lens(prefix_lens)
++                self._fill_compact_seq_lens_cpu_bound(
++                    batch_seq_lens_cpu=batch.seq_lens_cpu,
++                    nxt_kv_lens_cpu=draft_input.nxt_kv_lens_cpu,
++                    draft_prefix_lens=draft_prefix_lens,
++                    out=seq_lens_cpu,
++                )
++                self._rebuild_compact_draft_cache(
++                    req_pool_indices=batch.req_pool_indices,
++                    prefix_lens=prefix_lens,
++                    draft_prefix_lens=draft_prefix_lens,
++                    verify_out_cache_loc_2d=verify_out_cache_loc_2d,
++                    bs=bs,
++                    block_size=block_size,
++                )
++                draft_seq_lens = draft_prefix_lens
++                draft_seq_lens_sum = int(seq_lens_cpu.sum().item())
++            else:
++                # Non-windowed path uses the shared overallocated mapping directly.
++                # Backend planning only needs a safe upper bound for the committed
++                # prefix lengths, not the full allocator reservation length.
++                draft_seq_lens = prefix_lens
++                if batch.seq_lens_cpu is not None:
++                    # Host bound = committed prefix + one verify block.
++                    seq_lens_cpu.copy_(batch.seq_lens_cpu)
++                    seq_lens_cpu.add_(block_size)
++                    draft_seq_lens_sum = int(seq_lens_cpu.sum())
++                elif draft_input.nxt_kv_lens_cpu is not None:
++                    # GPU-only backend: reserved is a safe over-estimate.
++                    seq_lens_cpu.copy_(draft_input.nxt_kv_lens_cpu)
++                    draft_seq_lens_sum = int(draft_input.nxt_kv_lens_sum)
++                else:
++                    seq_lens_cpu.copy_(prefix_lens.to("cpu", dtype=torch.int32))
++                    draft_seq_lens_sum = int(prefix_lens.sum().item())
++
++            forward_batch = ForwardBatch(
++                forward_mode=ForwardMode.TARGET_VERIFY,
++                batch_size=bs,
++                input_ids=block_ids.flatten(),
+                 req_pool_indices=batch.req_pool_indices,
+-                prefix_lens=prefix_lens,
+-                draft_prefix_lens=draft_prefix_lens,
+-                verify_out_cache_loc_2d=verify_out_cache_loc_2d,
+-                bs=bs,
+-                block_size=block_size,
+-            )
+-            draft_seq_lens = draft_prefix_lens
+-            draft_seq_lens_sum = int(seq_lens_cpu.sum().item())
+-        else:
+-            # Non-windowed path uses the shared overallocated mapping directly.
+-            # Backend planning only needs a safe upper bound for the committed
+-            # prefix lengths, not the full allocator reservation length.
+-            draft_seq_lens = prefix_lens
+-            if batch.seq_lens_cpu is not None:
+-                # Host bound = committed prefix + one verify block.
+-                seq_lens_cpu.copy_(batch.seq_lens_cpu)
+-                seq_lens_cpu.add_(block_size)
+-                draft_seq_lens_sum = int(seq_lens_cpu.sum())
+-            elif draft_input.nxt_kv_lens_cpu is not None:
+-                # GPU-only backend: reserved is a safe over-estimate.
+-                seq_lens_cpu.copy_(draft_input.nxt_kv_lens_cpu)
+-                draft_seq_lens_sum = int(draft_input.nxt_kv_lens_sum)
++                seq_lens=draft_seq_lens,
++                out_cache_loc=verify_out_cache_loc,
++                seq_lens_sum=draft_seq_lens_sum,
++                seq_lens_cpu=seq_lens_cpu,
++                positions=positions,
++                input_embeds=input_embeds,
++                spec_algorithm=SpeculativeAlgorithm.DFLASH,
++                spec_info=self._draft_block_spec_info,
++                capture_hidden_mode=CaptureHiddenMode.NULL,
++                num_token_non_padded=(
++                    torch.tensor(bs * block_size, dtype=torch.int32, device=device)
++                    if enable_num_token_non_padded()
++                    else None
++                ),
++                global_num_token_non_padded_cpu=bs * block_size,
++            )
++
++            if self.selector is not None:
++                self._selector_sample = None
++                if self._draft_sampler is not None:
++                    # Consumed by the in-graph sample; must be staged before the replay.
++                    self._draft_sampler.stage_sampling_params(
++                        bs=bs, sampling_info=batch.sampling_info
++                    )
++
++            with (
++                torch.inference_mode(),
++                self.draft_tp_context(self.draft_model_runner.tp_group),
++            ):
++                draft_out = self.draft_model_runner.forward(forward_batch)
++            draft_logits_output = draft_out.logits_output
++
++            if (
++                self._is_domino
++                and self._draft_sampler is not None
++                and draft_out.can_run_graph
++            ):
++                draft_next = self._draft_sampler.out[
++                    : bs * (int(self.block_size) - 1)
++                ].view(bs, int(self.block_size) - 1)
++            elif self._is_domino:
++                draft_hidden = draft_logits_output.hidden_states
++                if draft_hidden is None:
++                    raise RuntimeError("DFLASH draft model returned no hidden states.")
++                draft_hidden = draft_hidden.view(bs, int(self.block_size), -1)
++                prefix_gru = self.draft_model.prefix_gru
++                embed_proj = self.draft_model.embed_proj
++                if prefix_gru is None or embed_proj is None:
++                    raise RuntimeError("DFLASH Domino projector modules are unavailable.")
++                tp_group = get_tp_group()
++                shard = getattr(lm_head, "shard_indices", None)
++                draft_next = domino_greedy_rollout(
++                    draft_hidden=draft_hidden,
++                    bonus_tokens=block_ids[:, 0],
++                    target_embedding=embed_module,
++                    lm_head_weight=lm_head.weight,
++                    prefix_gru=prefix_gru,
++                    embed_proj=embed_proj,
++                    vocab_size=int(self.model_runner.model_config.vocab_size),
++                    shift_label=bool(self.draft_model.shift_label),
++                    candidate_pool_size=self.domino_candidate_pool_size,
++                    tp_group=tp_group,
++                    lm_head_org_vocab_start=(
++                        int(shard.org_vocab_start_index) if shard is not None else 0
++                    ),
++                    lm_head_num_org=(
++                        int(shard.num_org_elements) if shard is not None else None
++                    ),
++                    lm_head_num_org_padded=(
++                        int(shard.num_org_elements_padded) if shard is not None else None
++                    ),
++                )
++            elif self._draft_sampler is not None and draft_out.can_run_graph:
++                draft_next = self._draft_sampler.out[
++                    : bs * (int(self.block_size) - 1)
++                ].view(bs, int(self.block_size) - 1)
++                if (
++                    self.selector is not None
++                    and not _is_all_greedy(batch.sampling_info)
++                    and self._selector_sampling_enabled
++                ):
++                    self._selector_sample = (
++                        self._draft_sampler.candidate_out[:bs],
++                        self._draft_sampler.q_out[:bs],
++                    )
++            elif self.selector is not None:
++                with self.draft_tp_context(self.draft_model_runner.tp_group):
++                    draft_next = self._propose_selector_block(
++                        draft_logits_output=draft_logits_output,
++                        bs=bs,
++                        lm_head=lm_head,
++                        anchor_token_ids=block_ids[:, 0],
++                        sampling_info=batch.sampling_info,
++                    )
+             else:
+-                seq_lens_cpu.copy_(prefix_lens.to("cpu", dtype=torch.int32))
+-                draft_seq_lens_sum = int(prefix_lens.sum().item())
+-
+-        forward_batch = ForwardBatch(
+-            forward_mode=ForwardMode.TARGET_VERIFY,
+-            batch_size=bs,
+-            input_ids=block_ids.flatten(),
+-            req_pool_indices=batch.req_pool_indices,
+-            seq_lens=draft_seq_lens,
+-            out_cache_loc=verify_out_cache_loc,
+-            seq_lens_sum=draft_seq_lens_sum,
+-            seq_lens_cpu=seq_lens_cpu,
+-            positions=positions,
+-            input_embeds=input_embeds,
+-            spec_algorithm=SpeculativeAlgorithm.DFLASH,
+-            spec_info=self._draft_block_spec_info,
+-            capture_hidden_mode=CaptureHiddenMode.NULL,
+-            num_token_non_padded=(
+-                torch.tensor(bs * block_size, dtype=torch.int32, device=device)
+-                if enable_num_token_non_padded()
+-                else None
+-            ),
+-            global_num_token_non_padded_cpu=bs * block_size,
+-        )
+-
+-        if self.selector is not None:
+-            self._selector_sample = None
+-            if self._draft_sampler is not None:
+-                # Consumed by the in-graph sample; must be staged before the replay.
+-                self._draft_sampler.stage_sampling_params(
+-                    bs=bs, sampling_info=batch.sampling_info
+-                )
+-
+-        with (
+-            torch.inference_mode(),
+-            self.draft_tp_context(self.draft_model_runner.tp_group),
+-        ):
+-            draft_out = self.draft_model_runner.forward(forward_batch)
+-        draft_logits_output = draft_out.logits_output
+-
+-        if (
+-            self._is_domino
+-            and self._draft_sampler is not None
+-            and draft_out.can_run_graph
+-        ):
+-            draft_next = self._draft_sampler.out[
+-                : bs * (int(self.block_size) - 1)
+-            ].view(bs, int(self.block_size) - 1)
+-        elif self._is_domino:
+-            draft_hidden = draft_logits_output.hidden_states
+-            if draft_hidden is None:
+-                raise RuntimeError("DFLASH draft model returned no hidden states.")
+-            draft_hidden = draft_hidden.view(bs, int(self.block_size), -1)
+-            prefix_gru = self.draft_model.prefix_gru
+-            embed_proj = self.draft_model.embed_proj
+-            if prefix_gru is None or embed_proj is None:
+-                raise RuntimeError("DFLASH Domino projector modules are unavailable.")
+-            tp_group = get_tp_group()
+-            shard = getattr(lm_head, "shard_indices", None)
+-            draft_next = domino_greedy_rollout(
+-                draft_hidden=draft_hidden,
+-                bonus_tokens=block_ids[:, 0],
+-                target_embedding=embed_module,
+-                lm_head_weight=lm_head.weight,
+-                prefix_gru=prefix_gru,
+-                embed_proj=embed_proj,
+-                vocab_size=int(self.model_runner.model_config.vocab_size),
+-                shift_label=bool(self.draft_model.shift_label),
+-                candidate_pool_size=self.domino_candidate_pool_size,
+-                tp_group=tp_group,
+-                lm_head_org_vocab_start=(
+-                    int(shard.org_vocab_start_index) if shard is not None else 0
+-                ),
+-                lm_head_num_org=(
+-                    int(shard.num_org_elements) if shard is not None else None
+-                ),
+-                lm_head_num_org_padded=(
+-                    int(shard.num_org_elements_padded) if shard is not None else None
+-                ),
+-            )
+-        elif self._draft_sampler is not None and draft_out.can_run_graph:
+-            draft_next = self._draft_sampler.out[
+-                : bs * (int(self.block_size) - 1)
+-            ].view(bs, int(self.block_size) - 1)
+-            if (
+-                self.selector is not None
+-                and not _is_all_greedy(batch.sampling_info)
+-                and self._selector_sampling_enabled
+-            ):
+-                self._selector_sample = (
+-                    self._draft_sampler.candidate_out[:bs],
+-                    self._draft_sampler.q_out[:bs],
+-                )
+-        elif self.selector is not None:
+-            with self.draft_tp_context(self.draft_model_runner.tp_group):
+-                draft_next = self._propose_selector_block(
+-                    draft_logits_output=draft_logits_output,
+-                    bs=bs,
+-                    lm_head=lm_head,
+-                    anchor_token_ids=block_ids[:, 0],
+-                    sampling_info=batch.sampling_info,
+-                )
+-        else:
+-            draft_hidden = draft_logits_output.hidden_states
+-            if draft_hidden is None:
+-                raise RuntimeError("DFLASH draft model returned no hidden states.")
+-            draft_hidden = draft_hidden.view(bs, int(self.block_size), -1)
+-            with self.draft_tp_context(self.draft_model_runner.tp_group):
+-                draft_next = self._greedy_sample_from_vocab_parallel_head(
+-                    hidden_states=draft_hidden[:, 1:, :].reshape(
+-                        -1, draft_hidden.shape[-1]
+-                    ),
+-                    lm_head=lm_head,
+-                ).view(bs, int(self.block_size) - 1)
++                draft_hidden = draft_logits_output.hidden_states
++                if draft_hidden is None:
++                    raise RuntimeError("DFLASH draft model returned no hidden states.")
++                draft_hidden = draft_hidden.view(bs, int(self.block_size), -1)
++                with self.draft_tp_context(self.draft_model_runner.tp_group):
++                    draft_next = self._greedy_sample_from_vocab_parallel_head(
++                        hidden_states=draft_hidden[:, 1:, :].reshape(
++                            -1, draft_hidden.shape[-1]
++                        ),
++                        lm_head=lm_head,
++                    ).view(bs, int(self.block_size) - 1)
+ 
+         draft_tokens = self._draft_block_tokens_buf[:bs]
+         draft_tokens[:, 0].copy_(block_ids[:, 0])
+--- a/python/sglang/srt/speculative/spec_info.py
++++ b/python/sglang/srt/speculative/spec_info.py
+@@ -319,6 +319,16 @@
+             # V2 worker drives both overlap and non-overlap (scheduler runs it
+             # synchronously when overlap is disabled), same as EAGLE.
+             from sglang.srt.speculative.dflash_worker_v2 import DFlashWorkerV2
++
++            from sglang.srt.utils.hf_transformers_utils import get_config
++            draft_config = get_config(
++                cfg.speculative_draft_model_path,
++                trust_remote_code=cfg.trust_remote_code,
++                revision=cfg.speculative_draft_model_revision,
++            )
++            if getattr(draft_config, "model_type", None) == "dneo":
++                from sglang.srt.speculative.dneo.runtime.dneo_worker import DNeoWorker
++                return DNeoWorker
+ 
+             return DFlashWorkerV2
+ 
+--- a/python/sglang/srt/arg_groups/speculative_hook.py
++++ b/python/sglang/srt/arg_groups/speculative_hook.py
+@@ -86,6 +86,12 @@
+             speculative_draft_model_path, trust_remote_code=trust_remote_code, **kwargs
+         )
+         draft_archs = getattr(cfg, "architectures", None) or []
++        if getattr(cfg, "model_type", None) == "dneo":
++            workspace = os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
++            if workspace != ":4096:8":
++                raise ValueError(
++                    "DNeo requires CUBLAS_WORKSPACE_CONFIG=:4096:8 before CUDA model initialization."
++                )
+         is_gemma4_draft = any(
+             arch in ("Gemma4AssistantForCausalLM", "Gemma4UnifiedAssistantForCausalLM")
+             for arch in draft_archs

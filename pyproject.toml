@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dneo-inference"
+version = "0.1.0rc5"
+description = "DNeo speculative decoding with exact T=7 MoFA and KV-only rejection memory"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.11"
+dependencies = ["torch>=2.9", "transformers>=5.12,<5.13", "safetensors>=0.7", "huggingface-hub>=1.0", "triton>=3.7,<3.8"]
+
+[project.optional-dependencies]
+test = ["pytest>=8", "build"]
+serving = ["flashinfer-python==0.6.18"]
+
+[project.scripts]
+dneo-generate = "dneo.generate:main"
+dneo-verify-install = "dneo.validation:main"
+dneo-benchmark = "dneo.benchmark:main"
+dneo-benchmark-summary = "dneo.benchmark_summary:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+dneo = ["runtime/*.json"]

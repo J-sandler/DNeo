@@ -1,0 +1,292 @@
+--- a/python/sglang/srt/function_call/function_call_parser.py
++++ b/python/sglang/srt/function_call/function_call_parser.py
+@@ -36,7 +36,12 @@
+ from sglang.srt.function_call.internlm_detector import InternlmDetector
+ from sglang.srt.function_call.k2_v3_detector import K2V3Detector
+ from sglang.srt.function_call.kimik2_detector import KimiK2Detector
+-from sglang.srt.function_call.kimik3_detector import KimiK3Detector
++try:
++    from sglang.srt.function_call.kimik3_detector import KimiK3Detector
++except ImportError:
++    # Kimi-K3 tool parsing requires a newer xgrammar build than legacy A10
++    # hosts can load. Plain generation does not use this optional parser.
++    KimiK3Detector = None
+ from sglang.srt.function_call.lfm2_detector import Lfm2Detector
+ from sglang.srt.function_call.ling3_detector import Ling3Detector
+ from sglang.srt.function_call.llama32_detector import Llama32Detector
+@@ -85,7 +90,7 @@
+         "gpt-oss": GptOssDetector,
+         "k2_horizon": K2V3Detector,
+         "kimi_k2": KimiK2Detector,
+-        "kimi_k3": KimiK3Detector,
++        **({"kimi_k3": KimiK3Detector} if KimiK3Detector is not None else {}),
+         "lfm2": Lfm2Detector,
+         "ling3": Ling3Detector,
+         "llama3": Llama32Detector,
+--- a/python/sglang/srt/layers/moe/token_dispatcher/flashinfer.py
++++ b/python/sglang/srt/layers/moe/token_dispatcher/flashinfer.py
+@@ -49,7 +49,7 @@
+     from sglang.srt.layers.quantization.fp4_utils import fp4_quantize
+ 
+     use_flashinfer = True
+-except ImportError:
++except (ImportError, OSError):
+     use_flashinfer = False
+ 
+ logger = logging.getLogger(__name__)
+--- a/python/sglang/srt/layers/moe/token_dispatcher/standard.py
++++ b/python/sglang/srt/layers/moe/token_dispatcher/standard.py
+@@ -57,7 +57,7 @@
+     from sglang.srt.layers.quantization.modelopt_quant import (
+         fp4_quantize as fp4_quantize_flashinfer,
+     )
+-except ImportError:
++except (ImportError, OSError):
+     fp4_quantize_flashinfer = None
+     nvfp4_block_scale_interleave_flashinfer = None
+ 
+--- a/python/sglang/srt/layers/moe/topk.py
++++ b/python/sglang/srt/layers/moe/topk.py
+@@ -186,7 +186,7 @@
+                 renormalize,
+             )
+ 
+-    except ImportError:
++    except (ImportError, OSError):
+         fused_topk_deepseek = None
+ 
+ if _is_cuda or _is_hip or _is_xpu:
+--- a/python/sglang/srt/layers/quantization/__init__.py
++++ b/python/sglang/srt/layers/quantization/__init__.py
+@@ -15,11 +15,17 @@
+ from sglang.srt.layers.quantization.base_config import QuantizationConfig
+ from sglang.srt.layers.quantization.bitsandbytes import BitsAndBytesConfig
+ from sglang.srt.layers.quantization.blockwise_int8 import BlockInt8Config
+-from sglang.srt.layers.quantization.compressed_tensors.compressed_tensors import (
+-    CompressedTensorsConfig,
+-)
++try:
++    from sglang.srt.layers.quantization.compressed_tensors.compressed_tensors import (
++        CompressedTensorsConfig,
++    )
++except (ImportError, OSError):
++    CompressedTensorsConfig = None
+ from sglang.srt.layers.quantization.fp8 import Fp8Config
+-from sglang.srt.layers.quantization.gguf import GGUFConfig
++try:
++    from sglang.srt.layers.quantization.gguf import GGUFConfig
++except ImportError:
++    GGUFConfig = None
+ from sglang.srt.layers.quantization.gptq import (
+     CPUGPTQConfig,
+     GPTQAscendConfig,
+@@ -73,10 +79,8 @@
+     "awq": AWQConfig,
+     "awq_marlin": AWQMarlinConfig,
+     "bitsandbytes": BitsAndBytesConfig,
+-    "gguf": GGUFConfig,
+     "gptq_marlin": GPTQMarlinConfig,
+     "moe_wna16": MoeWNA16Config,
+-    "compressed-tensors": CompressedTensorsConfig,
+     "w4afp8": W4AFp8Config,
+     "petit_nvfp4": PetitNvFp4Config,
+     "quark": QuarkConfig,
+@@ -88,6 +92,11 @@
+     "humming": HummingConfig,
+     "mxfp_w4a8": Mxfp4W4A8Config,
+ }
++
++if GGUFConfig is not None:
++    BASE_QUANTIZATION_METHODS["gguf"] = GGUFConfig
++if CompressedTensorsConfig is not None:
++    BASE_QUANTIZATION_METHODS["compressed-tensors"] = CompressedTensorsConfig
+ 
+ 
+ # On XPU the OCP-MoE `Mxfp4Config` path is served by the sgl-kernel-xpu grouped
+@@ -147,12 +156,13 @@
+ CPU_QUANTIZATION_METHODS = {
+     "fp8": Fp8Config,
+     "w8a8_int8": W8A8Int8Config,
+-    "compressed-tensors": CompressedTensorsConfig,
+     "awq": AWQCPUConfig,
+     "gptq": CPUGPTQConfig,
+     "mxfp4": Mxfp4Config,
+     "auto-round": AutoRoundConfig,
+ }
++if CompressedTensorsConfig is not None:
++    CPU_QUANTIZATION_METHODS["compressed-tensors"] = CompressedTensorsConfig
+ 
+ QUANTIZATION_METHODS = {**BASE_QUANTIZATION_METHODS}
+ 
+--- a/python/sglang/srt/layers/quantization/fp4_utils.py
++++ b/python/sglang/srt/layers/quantization/fp4_utils.py
+@@ -86,7 +86,7 @@
+         op_name="flashinfer_fp4_quantize",
+         fake_impl=_flashinfer_fp4_quantize_fake,
+     )
+-except ImportError:
++except (ImportError, OSError):
+     fp4_quantize = None
+ 
+ 
+--- a/python/sglang/srt/layers/quantization/fp8_utils.py
++++ b/python/sglang/srt/layers/quantization/fp8_utils.py
+@@ -238,7 +238,12 @@
+         N = mat_b.shape[-1]
+         return mat_a.new_empty((M, N), dtype=out_dtype)
+ 
+-    from flashinfer import bmm_fp8 as _raw_bmm_fp8_batched
++    try:
++        from flashinfer import bmm_fp8 as _raw_bmm_fp8_batched
++    except (ImportError, OSError):
++        # FP8 is optional.  In particular, an A10 BF16 runtime must not fail
++        # import because an unrelated FlashInfer binary targets newer GPUs.
++        _raw_bmm_fp8_batched = None
+ 
+     @register_custom_op(op_name="flashinfer_bmm_fp8_batched", mutates_args=["out"])
+     def _bmm_fp8_batched_op(
+@@ -248,6 +253,8 @@
+         A_scale: torch.Tensor,
+         B_scale: torch.Tensor,
+     ) -> None:
++        if _raw_bmm_fp8_batched is None:
++            raise RuntimeError("FlashInfer FP8 batched GEMM is unavailable")
+         _raw_bmm_fp8_batched(A, B, A_scale, B_scale, out.dtype, out)
+ 
+     def bmm_fp8(
+--- a/python/sglang/srt/layers/quantization/modelopt_quant.py
++++ b/python/sglang/srt/layers/quantization/modelopt_quant.py
+@@ -106,7 +106,7 @@
+     from flashinfer import reorder_rows_for_gated_act_gemm, shuffle_matrix_sf_a
+ 
+     enable_flashinfer_fp4_gemm = True
+-except ImportError:
++except (ImportError, OSError):
+     enable_flashinfer_fp4_gemm = False
+     reorder_rows_for_gated_act_gemm = None
+     shuffle_matrix_a = None
+--- a/python/sglang/srt/managers/schedule_policy.py
++++ b/python/sglang/srt/managers/schedule_policy.py
+@@ -46,9 +46,13 @@
+     ScheduleBatch,
+     split_cached_prefix_by_tier,
+ )
+-from sglang.srt.mem_cache.allocator.hisparse import (
+-    DeepSeekV4HiSparseTokenToKVPoolAllocator,
+-)
++try:
++    from sglang.srt.mem_cache.allocator.hisparse import (
++        DeepSeekV4HiSparseTokenToKVPoolAllocator,
++    )
++except (ImportError, OSError):
++    class DeepSeekV4HiSparseTokenToKVPoolAllocator:  # type: ignore[no-redef]
++        pass
+ from sglang.srt.mem_cache.allocator.swa import (
+     SWATokenToKVPoolAllocator,
+ )
+--- a/python/sglang/srt/managers/scheduler.py
++++ b/python/sglang/srt/managers/scheduler.py
+@@ -80,9 +80,12 @@
+     DecodeTransferQueue,
+     SchedulerDisaggregationDecodeMixin,
+ )
+-from sglang.srt.disaggregation.decode_kvcache_offload_manager import (
+-    DecodeKVCacheOffloadManager,
+-)
++try:
++    from sglang.srt.disaggregation.decode_kvcache_offload_manager import (
++        DecodeKVCacheOffloadManager,
++    )
++except (ImportError, OSError):
++    DecodeKVCacheOffloadManager = None
+ from sglang.srt.disaggregation.encoder.receiver import create_mm_receiver
+ from sglang.srt.disaggregation.prefill import (
+     PrefillBootstrapQueue,
+@@ -114,9 +117,16 @@
+ from sglang.srt.layers.quantization.fp8_utils import initialize_fp8_gemm_config
+ from sglang.srt.layers.quantization.unquant import initialize_bf16_gemm_config
+ from sglang.srt.lora.lora_drainer import LoRADrainer
+-from sglang.srt.lora.lora_overlap_loader import LoRAOverlapLoader
++try:
++    from sglang.srt.lora.lora_overlap_loader import LoRAOverlapLoader
++except (ImportError, OSError):
++    LoRAOverlapLoader = None
+ from sglang.srt.managers.disagg_service import maybe_create_ascend_config_store
+-from sglang.srt.managers.hisparse_coordinator import HiSparseCoordinator
++try:
++    from sglang.srt.managers.hisparse_coordinator import HiSparseCoordinator
++except (ImportError, OSError):
++    class HiSparseCoordinator:  # type: ignore[no-redef]
++        pass
+ from sglang.srt.managers.io_struct import (
+     AbortReq,
+     ActiveRanksOutput,
+@@ -634,6 +644,8 @@
+             get_disagg().disaggregation_mode == "decode"
+             and get_disagg().disaggregation_decode_enable_offload_kvcache
+         ):
++            if DecodeKVCacheOffloadManager is None:
++                raise RuntimeError("Decode KV-cache offload is unavailable")
+             self.decode_offload_manager = DecodeKVCacheOffloadManager(
+                 req_to_token_pool=self.req_to_token_pool,
+                 token_to_kv_pool_allocator=self.token_to_kv_pool_allocator,
+@@ -2247,6 +2259,8 @@
+ 
+     def init_lora_overlap_loader(self) -> None:
+         if self.enable_lora_overlap_loading:
++            if LoRAOverlapLoader is None:
++                raise RuntimeError("LoRA overlap loading is unavailable")
+             self.lora_overlap_loader = LoRAOverlapLoader(
+                 self.tp_worker.model_runner.lora_manager
+             )
+--- a/python/sglang/srt/speculative/dflash_worker_v2.py
++++ b/python/sglang/srt/speculative/dflash_worker_v2.py
+@@ -6,6 +6,16 @@
+ 
+ import torch
+ import torch.distributed as dist
++
++
++def _draft_temperature_override() -> Optional[float]:
++    value = os.environ.get("SGLANG_SPEC_DRAFT_TEMPERATURE_OVERRIDE")
++    if value is None:
++        return None
++    temperature = float(value)
++    if not math.isfinite(temperature) or temperature <= 0:
++        raise ValueError("SGLANG_SPEC_DRAFT_TEMPERATURE_OVERRIDE must be finite and > 0")
++    return temperature
+ 
+ from sglang.kernels.ops.speculative.cache_locs import (
+     assign_extend_cache_locs_func,
+@@ -257,6 +267,11 @@
+     def stage_sampling_params(self, *, bs: int, sampling_info) -> None:
+         """Host-side refresh of the static sampling params; must run before the draft
+         graph replay that consumes them."""
++        override = _draft_temperature_override()
++        if override is not None and self.sampling_enabled:
++            self.temperatures[:bs].fill_(override)
++            self.greedy_mask[:bs].fill_(False)
++            return
+         if sampling_info is None or not self.sampling_enabled:
+             self.temperatures[:bs].fill_(1.0)
+             self.greedy_mask[:bs].fill_(True)
+@@ -1383,12 +1398,19 @@
+         )
+         device = pred_hidden.device
+         # Clamped like DSpark so greedy rows don't divide by zero.
++        override = _draft_temperature_override()
+         temperatures = (
++            torch.full((bs,), override, dtype=torch.float32, device=device)
++            if override is not None and self._selector_sampling_enabled
++            else
+             torch.ones(bs, dtype=torch.float32, device=device)
+             if sampling_info is None or not self._selector_sampling_enabled
+             else sampling_info.temperatures.view(-1).float().clamp_min(1e-5)
+         )
+         greedy_mask = (
++            torch.zeros(bs, dtype=torch.bool, device=device)
++            if override is not None and self._selector_sampling_enabled
++            else
+             torch.ones(bs, dtype=torch.bool, device=device)
+             if not self._selector_sampling_enabled
+             else resolve_greedy_mask(bs=bs, sampling_info=sampling_info, device=device)

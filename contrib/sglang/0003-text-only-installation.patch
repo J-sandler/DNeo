@@ -1,0 +1,22 @@
+--- a/python/pyproject.toml
++++ b/python/pyproject.toml
+@@ -31,7 +31,7 @@
+   "compressed-tensors==0.18.0",
+   "cuda-python>=13.0",
+   # Transitive dep of flashinfer-python, pinned because 1.6.0rc6 shipped no cp310 linux x86_64 wheel.
+-  "cuda-tile==1.6.0rc5",
++  "cuda-tile==1.6.0",
+   "datasets",
+   "decord2 ; sys_platform == 'linux' and (platform_machine == 'aarch64' or platform_machine == 'arm64' or platform_machine == 'armv7l')",
+   "distro",
+@@ -88,9 +88,7 @@
+   "tomli ; python_version < '3.11'",
+   "torch==2.13.0",
+   "torch_memory_saver>=0.0.9.post1",
+-  "torchaudio==2.11.0",
+-  "torchcodec==0.15.0 ; sys_platform != 'linux' or (sys_platform == 'linux' and platform_machine != 'aarch64' and platform_machine != 'arm64' and platform_machine != 'armv7l')", # Not available on Linux ARM.
+-  "torchvision",
++  "torchvision==0.28.0",
+   "tqdm",
+   "transformers==5.12.1",
+   "uvicorn",

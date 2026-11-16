@@ -1,0 +1,20 @@
+{
+  "base_commit": "7ccbf5fd04f7ee23095fc38e49e749d58dc18282",
+  "files": {
+    "python/sglang/srt/function_call/function_call_parser.py": "6a50afdf6b7cb2a7b20a4448981af5034fd425757a5005a34c9382d00b305539",
+    "python/sglang/srt/layers/moe/token_dispatcher/flashinfer.py": "25d242c5fe883dc1508fba1fd6f46e72269bed4c6679689115520a3faf5c8210",
+    "python/sglang/srt/layers/moe/token_dispatcher/standard.py": "0f7fd1b404a87c2c310ec51f93ac4f5c0458267a3dfa6ed69095c8c6b1798019",
+    "python/sglang/srt/layers/moe/topk.py": "cc1d793ed2be558c561a5ef2a43db92ca9f7b24d27638962ca6b0d669fd06f8a",
+    "python/sglang/srt/layers/quantization/__init__.py": "141cd2f0ec123060b467a1c48ec56336266272178db35ffe8ab74f404c3b3e7e",
+    "python/sglang/srt/layers/quantization/fp4_utils.py": "3c3f261c4099d466c6d8bef993a3ec47b5d7f72ecf76f507cd286af1a9f8ed9a",
+    "python/sglang/srt/layers/quantization/fp8_utils.py": "d1812146a7be117347dc6a63ef2c7c049464cb0e154a027e3f49ad6760febdea",
+    "python/sglang/srt/layers/quantization/modelopt_quant.py": "fe32b610ce6ec6aa6062580d3cf0d80995ccdecf2f9b430022c775707ae83ddd",
+    "python/sglang/srt/managers/schedule_policy.py": "fdcdf3fefe43a1eadb319a241a7cfc12af90666412b5e59eeb7a138e31857015",
+    "python/sglang/srt/managers/scheduler.py": "78278ab95a823ae1e79c9ca23f7c0c0c5da46504d77b3fe5475e7f3bc075b8ef",
+    "python/sglang/srt/speculative/dflash_worker_v2.py": "617b505f186e5d7dd87a60ef4725bedf46add0a1e1efbb339f9361cf70792de3",
+    "python/sglang/srt/speculative/spec_info.py": "45104416aec365a06e22a3a683a4dfc18929e98d75d6e57e313fff65ac9145ad",
+    "python/sglang/srt/arg_groups/speculative_hook.py": "3db1abc0138d8b56974e68939a6b8d1509515b143d185def775706f28890ac37",
+    "python/sglang/srt/model_executor/model_runner.py": "96c2e3e40ed439dd4282c1ef91f86deb25c279d58e03c1241ed7e0d0b7ab7865",
+    "python/sglang/kernels/ops/attention/flash_attention.py": "9f03405f95d100b1989c7041b4dd27298374bb8b8fe152f16949dd0e73ad22bc"
+  }
+}

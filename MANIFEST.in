@@ -1,0 +1,7 @@
+include README.md LICENSE NOTICE QUALIFICATION.md requirements-h100.lock requirements-linux-py311.lock
+recursive-include contrib *.patch *.json *.md *.lock LICENSE NOTICE
+recursive-include contrib *.py
+recursive-include tests *.py
+recursive-include src *.py *.json
+recursive-include benchmarks *.json
+recursive-include .github *.yml
