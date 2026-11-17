@@ -31,24 +31,8 @@ verifies proposals using speculative rejection sampling.
 
 ![Screenshot 2026-11-16 at 8.35.40 PM](https://cdn-uploads.huggingface.co/production/uploads/66ca057ecee5cf1456ba278a/EDjzANDO0hMEnXtMTHvkb.png)
 
-*Historical figure from the previous per-layer-router checkpoint.*
 
 ## Performance
-
-The current default is the **shared-router checkpoint**, adapted for 100k
-prompts. In a matched online Leviathan test:
-
-| Checkpoint | Tokens / forward |
-| --- | ---: |
-| Current shared-router DNeo | 4.21 |
-| Previous per-layer-router DNeo | 4.30 |
-
-192 prompts across six benchmarks, two seeds, 512 output tokens per request;
-target and draft temperature 1, draft length 15. The shared checkpoint retains
-97.87% of the previous checkpoint's TPF. Its serving speed has not been
-remeasured in a full benchmark sweep.
-
-**Historical serving results for the previous per-layer checkpoint:**
 
 | Backend | Tokens / forward | Decode tokens/s | Decode speedup vs. AR |
 | --- | ---: | ---: | ---: |
@@ -64,7 +48,6 @@ startup, tokenization, and HTTP transport. Results depend on the workload.
 
 ![Screenshot 2026-11-16 at 8.46.44 PM](https://cdn-uploads.huggingface.co/production/uploads/66ca057ecee5cf1456ba278a/nCCgMMPfHjVY1cYbqpT65.png)
 
-*Historical figure from the previous per-layer-router checkpoint.*
 
 ## Inference
 
