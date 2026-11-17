@@ -1,5 +1,11 @@
 # Benchmarks
 
+The table below measures the previous per-layer-router checkpoint, retained
+as HF tag `per-layer-mofa-before-shared-20261117`. It is not a serving-speed
+measurement of the new shared-router default. The new weights reached TPF
+4.2109 versus 4.3024 for the previous weights in a separate matched online
+test (192 prompts, two seeds). See `QUALIFICATION.md` for the update's scope.
+
 Fresh-source measurements on one H100 80GB, BF16, TP=1, target/draft
 temperature 1, and blocks of 16 (15 draft tokens). Rates are total tokens/s,
 not per-user rates. Decode excludes prefill and the first token; request

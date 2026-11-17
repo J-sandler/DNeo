@@ -10,7 +10,7 @@ class DNeoConfig(PretrainedConfig):
                  target_config=None, block_size=16, num_hidden_layers=5,
                  target_layer_ids=None, head_rank=256, folded_rank=256,
                  conv_group_size=16, mask_token_id=151669,
-                 rotary_frequency_dtype=None, **kwargs):
+                 rotary_frequency_dtype=None, shared_layer_mofa=False, **kwargs):
         super().__init__(**kwargs)
         self.target_model_name_or_path = target_model_name_or_path
         self.target_revision = target_revision
@@ -21,6 +21,9 @@ class DNeoConfig(PretrainedConfig):
             tie_word_embeddings=True).to_dict()
         self.block_size = int(block_size)
         self.num_hidden_layers = int(num_hidden_layers)
+        if not isinstance(shared_layer_mofa, bool):
+            raise ValueError("shared_layer_mofa must be a boolean")
+        self.shared_layer_mofa = shared_layer_mofa
         self.target_layer_ids = list(target_layer_ids if target_layer_ids is not None else [0, 17, 21, 24, 28, 31, 35])
         self.head_rank, self.folded_rank = int(head_rank), int(folded_rank)
         self.conv_group_size, self.mask_token_id = int(conv_group_size), int(mask_token_id)

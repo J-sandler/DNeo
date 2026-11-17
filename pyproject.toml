@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dneo-inference"
-version = "0.1.0rc5"
+version = "0.1.0rc6"
 description = "DNeo speculative decoding with exact T=7 MoFA and KV-only rejection memory"
 readme = "README.md"
 license = {file = "LICENSE"}

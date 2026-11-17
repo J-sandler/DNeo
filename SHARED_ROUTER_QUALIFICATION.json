@@ -1,0 +1,41 @@
+{
+  "backends": [
+    "transformers",
+    "sglang"
+  ],
+  "batches": [
+    1,
+    4,
+    16,
+    32,
+    64
+  ],
+  "comparisons": [
+    "generated_token_ids",
+    "verifier_call_counts",
+    "acceptance_histograms"
+  ],
+  "draft_length": 15,
+  "draft_temperature": 1,
+  "generated_tokens_compared": 59904,
+  "requests_compared": 468,
+  "router_storage": "one learned router; no expanded weight serialization",
+  "runtime": "optimized v5; unchanged pinned dependencies with isolated updated Python sources",
+  "scope": "NATIVE_SHARED_VS_EXACT_BROADCAST_NOT_OLD_CHECKPOINT_ACCURACY_OR_PERFORMANCE_PARITY",
+  "standalone_hf_remote_code": {
+    "loader": "HF AutoModel trust_remote_code",
+    "router_shape": [
+      1,
+      1,
+      36
+    ],
+    "standalone_model_code": true,
+    "status": "PASS",
+    "tensor_count": 89
+  },
+  "status": "PASS",
+  "target_temperatures": [
+    0,
+    1
+  ]
+}

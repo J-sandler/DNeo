@@ -5,8 +5,10 @@ Allow eight CPU cores and 64GB host RAM for the source build. Inference results
 were measured on one H100 80GB. This setup is for the GPU server, not a Mac.
 
 Use `dneo-inference-source.tar.gz` from the matching
-[GitHub release](https://github.com/J-sandler/DNeo/releases), with the model's
-complete export in `hf_model/` beside it. Check the supplied release hashes.
+[HF model revision](https://huggingface.co/J-sandler/Qwen3-4B-DNeo/tree/main),
+with the model's complete export in `hf_model/` beside it. The matching bundle
+is version 0.1.0rc6; older releases do not support single-router weights.
+Check the supplied `SHA256SUMS` before installing.
 If the repositories are private, authenticate before downloading.
 
 The following is the previously GPU-tested installation recipe, unchanged:

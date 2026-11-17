@@ -58,6 +58,42 @@ def test_defaults_are_serializable():
     assert get_type_hints(rejection_memory_attention_mask)
 
 
+def test_shared_router_save_load_and_exact_broadcast_compatibility(tmp_path):
+    from dneo.runtime.feature_layout import router_weights
+    torch.manual_seed(17)
+    config = tiny_config()
+    config.shared_layer_mofa = True
+    shared = DNeoDraftModel(config).eval()
+    shared.conditioner.router_logits.data.normal_()
+    assert shared.conditioner.router_logits.shape == (1, 1, 4)
+    shared.save_pretrained(tmp_path)
+    restored = DNeoDraftModel.from_pretrained(tmp_path)
+    assert restored.config.shared_layer_mofa
+    assert torch.equal(restored.conditioner.router_logits, shared.conditioner.router_logits)
+    broadcast = DNeoDraftModel(tiny_config()).eval()
+    state = dict(shared.state_dict())
+    state["conditioner.router_logits"] = state["conditioner.router_logits"].expand(2, -1, -1).clone()
+    broadcast.load_state_dict(state, strict=True)
+    features = torch.randn(2, 6, 4, 32)
+    for actual, expected in zip(shared.conditioner(features), broadcast.conditioner(features)):
+        torch.testing.assert_close(actual, expected, rtol=0, atol=0)
+    assert shared.conditioner(features)[0].shape == (2, 6, 2, 32)
+    for dtype in (torch.float32, torch.bfloat16):
+        actual = router_weights(shared.conditioner, shared.conditioner.router_logits, [0, 3], dtype)
+        expected = router_weights(broadcast.conditioner, broadcast.conditioner.router_logits, [0, 3], dtype)
+        torch.testing.assert_close(actual, expected, rtol=0, atol=0)
+
+
+def test_shared_router_rejects_multiple_stored_routers():
+    from dneo.runtime.feature_layout import router_weights
+    import pytest
+    config = tiny_config()
+    config.shared_layer_mofa = True
+    model = DNeoDraftModel(config)
+    with pytest.raises(ValueError, match="exactly one router"):
+        router_weights(model.conditioner, torch.zeros(2, 1, 4), [0, 3], torch.float32)
+
+
 def test_fp32_verifier_conversion_preserves_bf16_draft_vocabulary_views():
     model = DNeoDraftModel(tiny_config()).eval()
     target = torch.nn.Module()

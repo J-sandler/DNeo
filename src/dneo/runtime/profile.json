@@ -1,5 +1,4 @@
 {
-  "profile_id": "dneo-native-hyperoptimized-t7-v5",
   "environment": {
     "a10": {
       "DNEO_KV_ONLY_ATTENTION_BACKEND": "triton"
@@ -31,6 +30,8 @@
       "DNEO_KV_ONLY_ATTENTION_BACKEND": "fa3-split"
     }
   },
-  "upstream_sglang_commit": "7ccbf5fd04f7ee23095fc38e49e749d58dc18282",
-  "source_checkpoint_sha256": "f6927c48a1b0fb72b87b11bf299fda912d63fc2a571283adce6c92597ea465c2"
+  "profile_id": "dneo-native-hyperoptimized-t7-v5-shared-router",
+  "shared_layer_mofa": true,
+  "source_checkpoint_sha256": "56738497f3b43586112d085e64f9b26852dec8971987dee2d3041128473d2433",
+  "upstream_sglang_commit": "7ccbf5fd04f7ee23095fc38e49e749d58dc18282"
 }
