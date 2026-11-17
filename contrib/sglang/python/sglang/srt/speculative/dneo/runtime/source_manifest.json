@@ -1,288 +1,291 @@
 {
-  "src/dneo/runtime/compact_mofa.py": {
-    "source": "scripts/inference/compact_mofa.py",
-    "source_sha256": "6aa448a65fb1527004d56d1600bca02f70a0883993dae43c33454f7184f730f1",
-    "packaged_sha256": "6aa448a65fb1527004d56d1600bca02f70a0883993dae43c33454f7184f730f1",
-    "transformation": "imports_only",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/compact_mofa_exact.py": {
-    "source": "scripts/inference/compact_mofa_exact.py",
-    "source_sha256": "9547d8a9b6d900b62eabfc5f24a782215d2e01a71d8363a27608111ccfcc32d6",
-    "packaged_sha256": "9547d8a9b6d900b62eabfc5f24a782215d2e01a71d8363a27608111ccfcc32d6",
-    "transformation": "imports_only",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/dneo.py": {
-    "source": "scripts/inference/dneo.py",
-    "source_sha256": "b381f4372a96fd42437bef2033b7eb398ea9bfbec6a3d8dc5fd05ea17e517ae7",
-    "packaged_sha256": "89450eea2a40a3ac3df5c0d26697edcd3114b572c90830b218178d305e1f6a9c",
-    "transformation": "imports_portable_loader_and_explicit_reference_attention_boundary",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/draft_operators.py": {
-    "source": "scripts/inference/draft_operators.py",
-    "source_sha256": "0005288e87e256e9dd37b5812e43a4d6855c8c885ebbc7c0a426e8c9419ff98d",
-    "packaged_sha256": "4384c9dce6f4478390a94e7dce79f3b9889244ae28998b742f39492a488dc7e7",
-    "transformation": "imports_only",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/exact_prefix_commit.py": {
-    "source": "scripts/inference/exact_prefix_commit.py",
-    "source_sha256": "fcf6f1f9c3def829c219fb964c2e0bb625f6e38b4c2ee391f422a2e357e34b4f",
-    "packaged_sha256": "42d15eeeb77a95b96ba18ef9674b93f67c47f5b9c9c596d363d6b3043297f13f",
-    "transformation": "imports_only",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/feature_layout.py": {
-    "source": "scripts/inference/feature_layout.py",
-    "source_sha256": "31c84caaa27a1f44a8995fc6f0cab67348e467e36f83da86edc167f500f0086b",
-    "packaged_sha256": "31c84caaa27a1f44a8995fc6f0cab67348e467e36f83da86edc167f500f0086b",
-    "transformation": "imports_only",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/graph_draft.py": {
-    "source": "scripts/inference/graph_draft.py",
-    "source_sha256": "47866cdc687f1294bb426993d335c8caa64c788675364de375aca5363b49cdeb",
-    "packaged_sha256": "1142b6d189ecf6255cda9f9d87d0bc46ede7c7854e7f17a938fb4178dc9e8f90",
-    "transformation": "imports_only",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/graph_prefix.py": {
-    "source": "scripts/inference/graph_prefix.py",
-    "source_sha256": "f05d477f5b28232a75da272d24216f9de2c0d0670f34d327504249f5e5d4bcea",
-    "packaged_sha256": "0789da3caad8a096f40c5f82eb92fc5c822745ab586e0936ef569ae92f95f566",
-    "transformation": "imports_only",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/graph_target.py": {
-    "source": "scripts/inference/graph_target.py",
-    "source_sha256": "3610b60f107a6684dae1fa1935dca48881d42b90847e260581262c74299379f6",
-    "packaged_sha256": "53490562d64592b91da555030065bbab82b5dcaebe2e41d1bcebf0bf2c041737",
-    "transformation": "imports_only",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/kernels.py": {
-    "source": "scripts/inference/kernels.py",
-    "source_sha256": "89c62d777a073abd3759b88f449f9811f7c45118fb289bd1d88d98700b1f0c01",
-    "packaged_sha256": "89c62d777a073abd3759b88f449f9811f7c45118fb289bd1d88d98700b1f0c01",
-    "transformation": "imports_only",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/kv_only_attention.py": {
-    "source": "scripts/inference/kv_only_attention.py",
-    "source_sha256": "b2d8e175c70e5c2e59623eb371ceadb782d3d97760726e85d3defd292f8037cb",
-    "packaged_sha256": "b2d8e175c70e5c2e59623eb371ceadb782d3d97760726e85d3defd292f8037cb",
-    "transformation": "imports_only",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/mofa_reuse.py": {
-    "source": "scripts/inference/mofa_reuse.py",
-    "source_sha256": "96a9e6fa75adee910f700dd1b3fb6a5c22d9221a1155cea32a5e8da470200061",
-    "packaged_sha256": "96a9e6fa75adee910f700dd1b3fb6a5c22d9221a1155cea32a5e8da470200061",
-    "transformation": "imports_only",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/optimized_backbone_ops.py": {
-    "source": "scripts/inference/optimized_backbone_ops.py",
-    "source_sha256": "a5155855e6140f9aa8e6729e4ddcc1df6f0b16ac7e65a56c585088263b6bd7b6",
-    "packaged_sha256": "dd3007b91dc989777df90681daad4ff9494e5e5c02b73690809b6337513f297f",
-    "transformation": "imports_only",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/packed_target.py": {
-    "source": "scripts/inference/packed_target.py",
-    "source_sha256": "6ae80ea9f241d8ae200e0e2081531bf68883e5cf076e359ddd8566d0cb0d6c0c",
-    "packaged_sha256": "6bc872a49d3fedda13219828eee0e090a593d3b03f7324821a6509b29602ab18",
-    "transformation": "imports_only",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/prefix_commit.py": {
-    "source": "scripts/inference/prefix_commit.py",
-    "source_sha256": "3c3a7112c74f5f4e2c8ba96c763db618fb36121a14e9f6784e9471bebc04934e",
-    "packaged_sha256": "3c3a7112c74f5f4e2c8ba96c763db618fb36121a14e9f6784e9471bebc04934e",
-    "transformation": "imports_only",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/serving_kernels.py": {
-    "source": "scripts/inference/serving_kernels.py",
-    "source_sha256": "8cd154ea836907b4230e3005587f87720044c41eeafb01867254316d8201aea1",
-    "packaged_sha256": "8cd154ea836907b4230e3005587f87720044c41eeafb01867254316d8201aea1",
-    "transformation": "imports_only",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/structural_draft.py": {
-    "source": "scripts/inference/structural_draft.py",
-    "source_sha256": "80e82a756e5d5b8e9317805a7110c995e0f5bf6c385325930d957cf6fb5a339e",
-    "packaged_sha256": "88bb76fd321e3a73a675d4cc230501a8f19f8857ed1d992ebb354bb93e140b10",
-    "transformation": "imports_and_explicit_reference_attention_boundary",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/structural_kernels.py": {
-    "source": "scripts/inference/structural_kernels.py",
-    "source_sha256": "01e3e25281d433754925533157e6978cb60068fc09d675ad58e17fa4999c4a69",
-    "packaged_sha256": "01e3e25281d433754925533157e6978cb60068fc09d675ad58e17fa4999c4a69",
-    "transformation": "imports_only",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/graph_head.py": {
-    "source": "scripts/inference/graph_head.py",
-    "source_sha256": "22164b59b803464c26e8213991dda49ddc0d3cc42e61c7ce2c15c14f41cb7888",
-    "packaged_sha256": "22164b59b803464c26e8213991dda49ddc0d3cc42e61c7ce2c15c14f41cb7888",
-    "transformation": "imports_only",
-    "profile_pinned": false,
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/pruned_layer.py": {
-    "source": "scripts/inference/pruned_layer.py",
-    "source_sha256": "f69f2afee8dfae70fed690cf08d037bbd7a95a3b28e120dffe984d84c369e278",
-    "packaged_sha256": "952a292585a86b0f8dff0af39e02b67c5ad293127d46813091d2b2675662d9aa",
-    "transformation": "imports_only",
-    "profile_pinned": false,
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/cuda_graph.py": {
-    "source": "scripts/inference/cuda_graph.py",
-    "source_sha256": "94895afe451112f72d05baebaa573a052b51960fae0f424ed358e71c7b848f8a",
-    "packaged_sha256": "94895afe451112f72d05baebaa573a052b51960fae0f424ed358e71c7b848f8a",
-    "transformation": "imports_only",
-    "profile_pinned": false,
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/compact_mofa_sparse.py": {
-    "source": "scripts/inference/compact_mofa_sparse.py",
-    "source_sha256": "8978a2078c14e1bbbc3cdbe6f25841f09e365542ba0ffdf8ad9e1ee14a5ba50d",
-    "packaged_sha256": "8978a2078c14e1bbbc3cdbe6f25841f09e365542ba0ffdf8ad9e1ee14a5ba50d",
-    "transformation": "imports_only",
-    "profile_pinned": false,
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/fused_conv_prepare.py": {
-    "source": "scripts/inference/fused_conv_prepare.py",
-    "source_sha256": "2e9f9e2b59ac80b618542a77adaf446d7d1bdc4472cefc89b9f69e59743e9d58",
-    "packaged_sha256": "2e9f9e2b59ac80b618542a77adaf446d7d1bdc4472cefc89b9f69e59743e9d58",
-    "transformation": "imports_only",
-    "profile_pinned": false,
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/benchmark_summary.py": {
-    "source": "public_release_boundary_or_extracted_shared_engine",
-    "packaged_sha256": "18c9ae4d89050590826ca4bf12a5ca090766bb9ec4b782eaf70a5e55754fbc39",
-    "transformation": "release_adapter",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/generate.py": {
-    "source": "public_release_boundary_or_extracted_shared_engine",
-    "packaged_sha256": "34b2a79ca92938d0c59582ffdea13308016392795fc01c19adbe43aefdfaa1a2",
-    "transformation": "release_adapter",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/modeling_dneo.py": {
-    "source": "public_release_boundary_or_extracted_shared_engine",
-    "packaged_sha256": "f245e42118e7ea0475f84be500ce15b58cd7a060a053d627063cbf9d4ae88ad3",
-    "transformation": "release_adapter",
-    "distribution": "in_tree_sglang_namespace"
-  },
   "src/dneo/__init__.py": {
-    "source": "public_release_boundary_or_extracted_shared_engine",
+    "distribution": "in_tree_sglang_namespace",
     "packaged_sha256": "5a90df0a68d7abffe91d2eed23c9212b68946b4690878b4b1ce9839e2a956b91",
-    "transformation": "release_adapter",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/reference.py": {
     "source": "public_release_boundary_or_extracted_shared_engine",
-    "packaged_sha256": "f79c36aece1380e5d2f6258edb0ce6d4a0d48c0313a367c9398ecd3164e49cd2",
-    "transformation": "release_adapter",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/configuration_dneo.py": {
-    "source": "public_release_boundary_or_extracted_shared_engine",
-    "packaged_sha256": "4598f5c4bb029d695c896a365ee3bc8c6730aff9076d64ca5a1b8b535526f3cb",
-    "transformation": "release_adapter",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/validation.py": {
-    "source": "public_release_boundary_or_extracted_shared_engine",
-    "packaged_sha256": "52ffae3fb84d988bf8f95e556930f09eb94c05aadf39dac213ee19109784be6e",
-    "transformation": "release_adapter",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/loading.py": {
-    "source": "public_release_boundary_or_extracted_shared_engine",
-    "packaged_sha256": "0231151ba9628d0b86036df3bc197f9c8e803260a272fdd89849ade47cc7f0aa",
-    "transformation": "release_adapter",
-    "distribution": "in_tree_sglang_namespace"
+    "transformation": "release_adapter"
   },
   "src/dneo/benchmark.py": {
-    "source": "public_release_boundary_or_extracted_shared_engine",
+    "distribution": "in_tree_sglang_namespace",
     "packaged_sha256": "0779cc2a3d68022057d9d54591cbd28decc1cc62ee2c154b3cd23c0b51f5a331",
-    "transformation": "release_adapter",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/dneo_worker.py": {
     "source": "public_release_boundary_or_extracted_shared_engine",
-    "packaged_sha256": "05e81d43aefd155309c29ed00f57b931823534571a008fec8c934eef14dd4ffb",
-    "transformation": "release_adapter",
-    "distribution": "in_tree_sglang_namespace"
+    "transformation": "release_adapter"
   },
-  "src/dneo/runtime/joint_cached_attention.py": {
+  "src/dneo/benchmark_summary.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "18c9ae4d89050590826ca4bf12a5ca090766bb9ec4b782eaf70a5e55754fbc39",
     "source": "public_release_boundary_or_extracted_shared_engine",
-    "packaged_sha256": "432c028bf8266d7f7a8255f5b122284b774d3aefffac058051c91d539fe9e2d3",
-    "transformation": "release_adapter",
-    "distribution": "in_tree_sglang_namespace"
+    "transformation": "release_adapter"
   },
-  "src/dneo/runtime/dneo_production.py": {
+  "src/dneo/configuration_dneo.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "f50bbb2021b7e1e2eb1e87ded3e5e2fe7116fd712f41e3f9dad9e7c8a8d613a3",
+    "previous_packaged_sha256": "4598f5c4bb029d695c896a365ee3bc8c6730aff9076d64ca5a1b8b535526f3cb",
     "source": "public_release_boundary_or_extracted_shared_engine",
-    "packaged_sha256": "971ef9924b258dbca2c786c9a27a1f93906c27710bd5071c2a40155a2f3685c4",
-    "transformation": "release_adapter",
-    "distribution": "in_tree_sglang_namespace"
+    "transformation": "backward_compatible_single_shared_router"
   },
-  "src/dneo/runtime/engine.py": {
+  "src/dneo/generate.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "34b2a79ca92938d0c59582ffdea13308016392795fc01c19adbe43aefdfaa1a2",
     "source": "public_release_boundary_or_extracted_shared_engine",
-    "packaged_sha256": "8c06dda8bb9defa2f41813333d60b0f8c83c1416d40e341080043b7134c0ea26",
-    "transformation": "release_adapter",
-    "distribution": "in_tree_sglang_namespace"
+    "transformation": "release_adapter"
+  },
+  "src/dneo/loading.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "0231151ba9628d0b86036df3bc197f9c8e803260a272fdd89849ade47cc7f0aa",
+    "source": "public_release_boundary_or_extracted_shared_engine",
+    "transformation": "release_adapter"
+  },
+  "src/dneo/modeling_dneo.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "c9371489171ede8c8728177234c406671e02123668271574351b467328858a8d",
+    "previous_packaged_sha256": "f245e42118e7ea0475f84be500ce15b58cd7a060a053d627063cbf9d4ae88ad3",
+    "source": "public_release_boundary_or_extracted_shared_engine",
+    "transformation": "backward_compatible_single_shared_router"
+  },
+  "src/dneo/reference.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "f79c36aece1380e5d2f6258edb0ce6d4a0d48c0313a367c9398ecd3164e49cd2",
+    "source": "public_release_boundary_or_extracted_shared_engine",
+    "transformation": "release_adapter"
   },
   "src/dneo/runtime/__init__.py": {
-    "source": "public_release_boundary_or_extracted_shared_engine",
+    "distribution": "in_tree_sglang_namespace",
     "packaged_sha256": "80df1f9f0a3afa33dda4697d406876c0d54e2b80b0098f3f5f696b20fbd53be8",
-    "transformation": "release_adapter",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/hf_cohort.py": {
     "source": "public_release_boundary_or_extracted_shared_engine",
-    "packaged_sha256": "7401ce739bcc1ba9d3c2e5b995cef014907964037122e37f03c3173097b72340",
-    "transformation": "release_adapter",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/stream_timing.py": {
-    "source": "public_release_boundary_or_extracted_shared_engine",
-    "packaged_sha256": "3e81dfe554f2238356caf119b11de1cf2c2b4a0c7722310e5b69246dd1c951aa",
-    "transformation": "release_adapter",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/cohort_benchmark.py": {
-    "source": "public_release_boundary_or_extracted_shared_engine",
-    "packaged_sha256": "e9c0909305e34181d25bb01d0cda0c94fa5bb32bf149b84311f3bb16365707dc",
-    "transformation": "release_adapter",
-    "distribution": "in_tree_sglang_namespace"
-  },
-  "src/dneo/runtime/native_hooks.py": {
-    "source": "public_release_boundary_or_extracted_shared_engine",
-    "packaged_sha256": "1f527d46a42570d360c78ce8dc364949ce5f70a3103354a661629912da380ace",
-    "transformation": "release_adapter",
-    "distribution": "in_tree_sglang_namespace"
+    "transformation": "release_adapter"
   },
   "src/dneo/runtime/acceptance.py": {
-    "source": "public_release_boundary_or_extracted_shared_engine",
+    "distribution": "in_tree_sglang_namespace",
     "packaged_sha256": "8d86752a9a867d3d4ad15eebb39dbf588d3bd9a6dd546487a001e2645426d969",
-    "transformation": "release_adapter",
-    "distribution": "in_tree_sglang_namespace"
+    "source": "public_release_boundary_or_extracted_shared_engine",
+    "transformation": "release_adapter"
+  },
+  "src/dneo/runtime/cohort_benchmark.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "e9c0909305e34181d25bb01d0cda0c94fa5bb32bf149b84311f3bb16365707dc",
+    "source": "public_release_boundary_or_extracted_shared_engine",
+    "transformation": "release_adapter"
+  },
+  "src/dneo/runtime/compact_mofa.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "6aa448a65fb1527004d56d1600bca02f70a0883993dae43c33454f7184f730f1",
+    "source": "scripts/inference/compact_mofa.py",
+    "source_sha256": "6aa448a65fb1527004d56d1600bca02f70a0883993dae43c33454f7184f730f1",
+    "transformation": "imports_only"
+  },
+  "src/dneo/runtime/compact_mofa_exact.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "9547d8a9b6d900b62eabfc5f24a782215d2e01a71d8363a27608111ccfcc32d6",
+    "source": "scripts/inference/compact_mofa_exact.py",
+    "source_sha256": "9547d8a9b6d900b62eabfc5f24a782215d2e01a71d8363a27608111ccfcc32d6",
+    "transformation": "imports_only"
+  },
+  "src/dneo/runtime/compact_mofa_sparse.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "8978a2078c14e1bbbc3cdbe6f25841f09e365542ba0ffdf8ad9e1ee14a5ba50d",
+    "profile_pinned": false,
+    "source": "scripts/inference/compact_mofa_sparse.py",
+    "source_sha256": "8978a2078c14e1bbbc3cdbe6f25841f09e365542ba0ffdf8ad9e1ee14a5ba50d",
+    "transformation": "imports_only"
+  },
+  "src/dneo/runtime/cuda_graph.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "94895afe451112f72d05baebaa573a052b51960fae0f424ed358e71c7b848f8a",
+    "profile_pinned": false,
+    "source": "scripts/inference/cuda_graph.py",
+    "source_sha256": "94895afe451112f72d05baebaa573a052b51960fae0f424ed358e71c7b848f8a",
+    "transformation": "imports_only"
+  },
+  "src/dneo/runtime/dneo.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "89450eea2a40a3ac3df5c0d26697edcd3114b572c90830b218178d305e1f6a9c",
+    "source": "scripts/inference/dneo.py",
+    "source_sha256": "b381f4372a96fd42437bef2033b7eb398ea9bfbec6a3d8dc5fd05ea17e517ae7",
+    "transformation": "imports_portable_loader_and_explicit_reference_attention_boundary"
+  },
+  "src/dneo/runtime/dneo_production.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "971ef9924b258dbca2c786c9a27a1f93906c27710bd5071c2a40155a2f3685c4",
+    "source": "public_release_boundary_or_extracted_shared_engine",
+    "transformation": "release_adapter"
+  },
+  "src/dneo/runtime/dneo_worker.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "05e81d43aefd155309c29ed00f57b931823534571a008fec8c934eef14dd4ffb",
+    "source": "public_release_boundary_or_extracted_shared_engine",
+    "transformation": "release_adapter"
+  },
+  "src/dneo/runtime/draft_operators.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "4384c9dce6f4478390a94e7dce79f3b9889244ae28998b742f39492a488dc7e7",
+    "source": "scripts/inference/draft_operators.py",
+    "source_sha256": "0005288e87e256e9dd37b5812e43a4d6855c8c885ebbc7c0a426e8c9419ff98d",
+    "transformation": "imports_only"
+  },
+  "src/dneo/runtime/engine.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "8c06dda8bb9defa2f41813333d60b0f8c83c1416d40e341080043b7134c0ea26",
+    "source": "public_release_boundary_or_extracted_shared_engine",
+    "transformation": "release_adapter"
+  },
+  "src/dneo/runtime/exact_prefix_commit.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "42d15eeeb77a95b96ba18ef9674b93f67c47f5b9c9c596d363d6b3043297f13f",
+    "source": "scripts/inference/exact_prefix_commit.py",
+    "source_sha256": "fcf6f1f9c3def829c219fb964c2e0bb625f6e38b4c2ee391f422a2e357e34b4f",
+    "transformation": "imports_only"
+  },
+  "src/dneo/runtime/feature_layout.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "50f73d9bb166680ec4600b287b96e0753476f4a0fd26e005ccdcd5a29c2d7e0a",
+    "previous_packaged_sha256": "31c84caaa27a1f44a8995fc6f0cab67348e467e36f83da86edc167f500f0086b",
+    "source": "scripts/inference/feature_layout.py",
+    "source_sha256": "31c84caaa27a1f44a8995fc6f0cab67348e467e36f83da86edc167f500f0086b",
+    "transformation": "backward_compatible_single_shared_router"
+  },
+  "src/dneo/runtime/fused_conv_prepare.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "2e9f9e2b59ac80b618542a77adaf446d7d1bdc4472cefc89b9f69e59743e9d58",
+    "profile_pinned": false,
+    "source": "scripts/inference/fused_conv_prepare.py",
+    "source_sha256": "2e9f9e2b59ac80b618542a77adaf446d7d1bdc4472cefc89b9f69e59743e9d58",
+    "transformation": "imports_only"
+  },
+  "src/dneo/runtime/graph_draft.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "1142b6d189ecf6255cda9f9d87d0bc46ede7c7854e7f17a938fb4178dc9e8f90",
+    "source": "scripts/inference/graph_draft.py",
+    "source_sha256": "47866cdc687f1294bb426993d335c8caa64c788675364de375aca5363b49cdeb",
+    "transformation": "imports_only"
+  },
+  "src/dneo/runtime/graph_head.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "22164b59b803464c26e8213991dda49ddc0d3cc42e61c7ce2c15c14f41cb7888",
+    "profile_pinned": false,
+    "source": "scripts/inference/graph_head.py",
+    "source_sha256": "22164b59b803464c26e8213991dda49ddc0d3cc42e61c7ce2c15c14f41cb7888",
+    "transformation": "imports_only"
+  },
+  "src/dneo/runtime/graph_prefix.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "0789da3caad8a096f40c5f82eb92fc5c822745ab586e0936ef569ae92f95f566",
+    "source": "scripts/inference/graph_prefix.py",
+    "source_sha256": "f05d477f5b28232a75da272d24216f9de2c0d0670f34d327504249f5e5d4bcea",
+    "transformation": "imports_only"
+  },
+  "src/dneo/runtime/graph_target.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "53490562d64592b91da555030065bbab82b5dcaebe2e41d1bcebf0bf2c041737",
+    "source": "scripts/inference/graph_target.py",
+    "source_sha256": "3610b60f107a6684dae1fa1935dca48881d42b90847e260581262c74299379f6",
+    "transformation": "imports_only"
+  },
+  "src/dneo/runtime/hf_cohort.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "7401ce739bcc1ba9d3c2e5b995cef014907964037122e37f03c3173097b72340",
+    "source": "public_release_boundary_or_extracted_shared_engine",
+    "transformation": "release_adapter"
+  },
+  "src/dneo/runtime/joint_cached_attention.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "432c028bf8266d7f7a8255f5b122284b774d3aefffac058051c91d539fe9e2d3",
+    "source": "public_release_boundary_or_extracted_shared_engine",
+    "transformation": "release_adapter"
+  },
+  "src/dneo/runtime/kernels.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "89c62d777a073abd3759b88f449f9811f7c45118fb289bd1d88d98700b1f0c01",
+    "source": "scripts/inference/kernels.py",
+    "source_sha256": "89c62d777a073abd3759b88f449f9811f7c45118fb289bd1d88d98700b1f0c01",
+    "transformation": "imports_only"
+  },
+  "src/dneo/runtime/kv_only_attention.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "b2d8e175c70e5c2e59623eb371ceadb782d3d97760726e85d3defd292f8037cb",
+    "source": "scripts/inference/kv_only_attention.py",
+    "source_sha256": "b2d8e175c70e5c2e59623eb371ceadb782d3d97760726e85d3defd292f8037cb",
+    "transformation": "imports_only"
+  },
+  "src/dneo/runtime/mofa_reuse.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "96a9e6fa75adee910f700dd1b3fb6a5c22d9221a1155cea32a5e8da470200061",
+    "source": "scripts/inference/mofa_reuse.py",
+    "source_sha256": "96a9e6fa75adee910f700dd1b3fb6a5c22d9221a1155cea32a5e8da470200061",
+    "transformation": "imports_only"
+  },
+  "src/dneo/runtime/native_hooks.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "1f527d46a42570d360c78ce8dc364949ce5f70a3103354a661629912da380ace",
+    "source": "public_release_boundary_or_extracted_shared_engine",
+    "transformation": "release_adapter"
+  },
+  "src/dneo/runtime/optimized_backbone_ops.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "dd3007b91dc989777df90681daad4ff9494e5e5c02b73690809b6337513f297f",
+    "source": "scripts/inference/optimized_backbone_ops.py",
+    "source_sha256": "a5155855e6140f9aa8e6729e4ddcc1df6f0b16ac7e65a56c585088263b6bd7b6",
+    "transformation": "imports_only"
+  },
+  "src/dneo/runtime/packed_target.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "6bc872a49d3fedda13219828eee0e090a593d3b03f7324821a6509b29602ab18",
+    "source": "scripts/inference/packed_target.py",
+    "source_sha256": "6ae80ea9f241d8ae200e0e2081531bf68883e5cf076e359ddd8566d0cb0d6c0c",
+    "transformation": "imports_only"
+  },
+  "src/dneo/runtime/prefix_commit.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "3c3a7112c74f5f4e2c8ba96c763db618fb36121a14e9f6784e9471bebc04934e",
+    "source": "scripts/inference/prefix_commit.py",
+    "source_sha256": "3c3a7112c74f5f4e2c8ba96c763db618fb36121a14e9f6784e9471bebc04934e",
+    "transformation": "imports_only"
+  },
+  "src/dneo/runtime/pruned_layer.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "952a292585a86b0f8dff0af39e02b67c5ad293127d46813091d2b2675662d9aa",
+    "profile_pinned": false,
+    "source": "scripts/inference/pruned_layer.py",
+    "source_sha256": "f69f2afee8dfae70fed690cf08d037bbd7a95a3b28e120dffe984d84c369e278",
+    "transformation": "imports_only"
   },
   "src/dneo/runtime/reference_matched_attention.py": {
-    "source": "public_release_boundary_or_extracted_shared_engine",
+    "distribution": "in_tree_sglang_namespace",
     "packaged_sha256": "ac0bdd64112707bbe932eec2c2dac373656348794f8fe4fcc4e2379ea67c932b",
-    "transformation": "release_adapter",
-    "distribution": "in_tree_sglang_namespace"
+    "source": "public_release_boundary_or_extracted_shared_engine",
+    "transformation": "release_adapter"
+  },
+  "src/dneo/runtime/serving_kernels.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "8cd154ea836907b4230e3005587f87720044c41eeafb01867254316d8201aea1",
+    "source": "scripts/inference/serving_kernels.py",
+    "source_sha256": "8cd154ea836907b4230e3005587f87720044c41eeafb01867254316d8201aea1",
+    "transformation": "imports_only"
+  },
+  "src/dneo/runtime/stream_timing.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "3e81dfe554f2238356caf119b11de1cf2c2b4a0c7722310e5b69246dd1c951aa",
+    "source": "public_release_boundary_or_extracted_shared_engine",
+    "transformation": "release_adapter"
+  },
+  "src/dneo/runtime/structural_draft.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "88bb76fd321e3a73a675d4cc230501a8f19f8857ed1d992ebb354bb93e140b10",
+    "source": "scripts/inference/structural_draft.py",
+    "source_sha256": "80e82a756e5d5b8e9317805a7110c995e0f5bf6c385325930d957cf6fb5a339e",
+    "transformation": "imports_and_explicit_reference_attention_boundary"
+  },
+  "src/dneo/runtime/structural_kernels.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "01e3e25281d433754925533157e6978cb60068fc09d675ad58e17fa4999c4a69",
+    "source": "scripts/inference/structural_kernels.py",
+    "source_sha256": "01e3e25281d433754925533157e6978cb60068fc09d675ad58e17fa4999c4a69",
+    "transformation": "imports_only"
+  },
+  "src/dneo/validation.py": {
+    "distribution": "in_tree_sglang_namespace",
+    "packaged_sha256": "52ffae3fb84d988bf8f95e556930f09eb94c05aadf39dac213ee19109784be6e",
+    "source": "public_release_boundary_or_extracted_shared_engine",
+    "transformation": "release_adapter"
   }
 }

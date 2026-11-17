@@ -19,6 +19,11 @@ def feature_layer_ids(conditioner, *, compact=True):
 def router_weights(conditioner, logits, layer_ids, dtype):
     mask = getattr(conditioner, "shared_mofa_candidate_mask", None)
     values = logits.detach().float()
+    if getattr(conditioner, "shared_layer_mofa", False):
+        if values.ndim != 3 or values.shape[:2] != (1, 1):
+            raise ValueError("shared MoFA requires exactly one router shared across layers and KV heads")
+        # Only the tiny cached coefficient table is expanded; weights stay tied.
+        values = values.expand(conditioner.num_draft_layers, -1, -1)
     if mask is not None:
         values = values.masked_fill(~mask, torch.finfo(values.dtype).min)
     probabilities = values.softmax(-1)

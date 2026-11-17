@@ -1,23 +1,15 @@
-# Release Qualification
+# Shared-Router Update
 
-This release refreshes the documentation of engineering-qualified rc5.
-All inference Python/JSON files, integration patches, dependency locks, model
-configuration, and learned tensors are byte-identical to that qualified release.
-Archive and wheel metadata hashes changed; the wheel has build tag 1docs.
-No new GPU execution is claimed for this documentation-only refresh.
+Version 0.1.0rc6 supports one checkpoint-defined router shared across all draft
+layers and KV heads, while retaining old per-layer checkpoint compatibility.
+The optimized v5 kernels, head, attention, and acceptance policy are unchanged.
+The source bundle and in-tree SGLang contribution use the same model code.
 
-The original qualification passed 60 numerical fixtures, generated-token parity
-over 1,280 requests / 655,360 tokens, and 80 paired H100 performance cells.
-The later fresh-source quickstart passed 20,480 exact acceptance-count/histogram
-request comparisons; throughput differed from its references by at most 2.83%.
-Exactness applies to the specified fixtures and counts, not arbitrary hardware,
-all possible inputs, or wall-clock time. See the public qualification reports.
+The adapted checkpoint's matched online TPF was 4.2109 versus 4.3024 for the
+previous checkpoint. Default selection was explicitly approved despite the
+2.13% TPF decrease. Earlier serving throughput numbers concern the previous
+weights and must not be presented as new measurements of this checkpoint.
 
-Supported performance scope: H100 80GB, TP=1, BF16, batches 1/4/16/32/64,
-block size 16, total context 1024, target temperature 0/1 and draft temperature 1.
-No vLLM, TP>1, tree, other-GPU, or unbounded-context performance claim is made.
-The matched benchmark prompt bank is not bundled; different prompts change TPF.
-
-Code retains MIT. The author selected Apache-2.0 for the draft weights;
-upstream notices remain intact. This records the release license choice, not
-an independent legal opinion about ownership or third-party rights.
+Numerical/storage compatibility and GPU decode results for this update are
+recorded in SHARED_ROUTER_QUALIFICATION.json when qualification has completed.
+This update does not inherit the prior release's performance attestation.

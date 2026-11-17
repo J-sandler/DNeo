@@ -18,7 +18,6 @@
     "python/sglang/kernels/ops/attention/flash_attention.py": "9f03405f95d100b1989c7041b4dd27298374bb8b8fe152f16949dd0e73ad22bc"
   },
   "published": false,
-  "qualification": "PASS_INHERITED_RC5_BYTE_IDENTICAL_RUNTIME",
-  "install_metadata_scope": "Qwen3 text-only; stable cuda-tile; compatible torchvision 0.28 and timm 1.0.16; no torch-mismatched audio extras",
-  "qualification_scope": "Original rc5 GPU evidence plus documentation-only refresh"
+  "qualification": "PENDING",
+  "install_metadata_scope": "Qwen3 text-only; stable cuda-tile; compatible torchvision 0.28 and timm 1.0.16; no torch-mismatched audio extras"
 }

@@ -106,7 +106,9 @@ class Conditioner(nn.Module):
         self.num_target_layers, self.num_draft_layers = config.num_target_layers, config.num_hidden_layers
         self.num_kv_heads = config.num_key_value_heads
         self.per_layer_mofa = True
-        self.router_logits = nn.Parameter(torch.zeros(config.num_hidden_layers, 1, config.num_target_layers))
+        self.shared_layer_mofa = config.shared_layer_mofa
+        router_layers = 1 if self.shared_layer_mofa else config.num_hidden_layers
+        self.router_logits = nn.Parameter(torch.zeros(router_layers, 1, config.num_target_layers))
         self.register_buffer("fixed_layer_indices", torch.empty(0, dtype=torch.long))
         candidate_mask = torch.zeros(config.num_target_layers, dtype=torch.bool)
         candidate_mask[config.target_layer_ids] = True
@@ -118,6 +120,9 @@ class Conditioner(nn.Module):
     def forward(self, target_hidden, **kwargs):
         values = self.router_logits.float().masked_fill(~self.shared_mofa_candidate_mask, torch.finfo(torch.float32).min)
         probabilities = values.softmax(-1)
+        if self.shared_layer_mofa:
+            context = torch.einsum("hl,bsld->bshd", probabilities[0].expand(self.num_kv_heads, -1).to(target_hidden.dtype), target_hidden)
+            return (context,) * self.num_draft_layers
         return tuple(torch.einsum("hl,bsld->bshd", weights.expand(self.num_kv_heads, -1).to(target_hidden.dtype), target_hidden) for weights in probabilities)
 
 
