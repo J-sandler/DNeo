@@ -1,9 +1,5 @@
 # Pinned SGLang Integration
 
-This candidate reuses upstream DFLASH target verification and scheduling, with
-native model-config dispatch to DNeo. It does not use an environment variable to
-select a hidden model, and it does not load a second draft model.
-
 Base: `https://github.com/sgl-project/sglang`, commit
 `7ccbf5fd04f7ee23095fc38e49e749d58dc18282`.
 
