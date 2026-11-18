@@ -1,5 +1,6 @@
 # DNeo Fast Parallel Drafter
 
+[**Paper**](https://arxiv.org/pdf/2611.21925) |
 [**GitHub**](https://github.com/J-sandler/DNeo) |
 [**Quickstart**](https://github.com/J-sandler/DNeo/blob/main/QUICKSTART.md#install) |
 [**Benchmarks**](https://github.com/J-sandler/DNeo/blob/main/BENCHMARKS.md)
